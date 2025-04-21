@@ -12,7 +12,7 @@
     <div class="container-fluid my-3 small">
         <div class="row">
             <div class="col">
-                <button type="button" id="add_note" onclick="new_note" class="btn btn-sm btn-primary ">Add Note</button>
+                <button type="button" id="add_note" class="btn btn-sm btn-primary ">Add Note</button>
             </div>
         </div>
         <div class="row my-3" id="notes">
@@ -23,6 +23,7 @@
     <script>
         const add_note_button = document.getElementById("add_note");
         function new_note(){
+            // Create Note Element
            const noteElement = document.createElement("div");
            noteElement.classList.add("col-md-3");
            noteElement.innerHTML = `
@@ -33,10 +34,41 @@
                 </div>
                 <div class="card-body">
                      Note Body
-                </div>`;
+                </div>
+                </div>
+                `;
                 document.getElementById("notes").appendChild(noteElement);
+
+                // Add event listeners ir the card-header
+                const cardHeader = noteElement.querySelector(".card-header span");
+                cardHeader.addEventListener("click", function(){
+            this.setAttribute("contenteditable", "true");
+        });
+
+        // Enter too save
+        cardHeader.addEventListener("keydown", function(event){
+            if(event.key === "Enter") {
+                event.preventDefault();
+                this.removeAttribute("contenteditable");
+                this.blur();
+            }
+        });
+
+        // Card Body
+        const cardBody = noteElement.querySelector(".card-body");
+                cardBody.addEventListener("click", function(){
+            this.setAttribute("contenteditable", "true");
+        });
+        cardBody.addEventListener("blur", function(){
+            this.removeAttribute("contenteditable");
+        });
+        // Add the event listener for the close button
+        const closeButton = noteElement.querySelector(".btn-close");
+        closeButton.addEventListener("click", function(){
+            noteElement.remove();
+        });
         }
-        add_note_button.addEventListener("click", new_note);
+        add_note_button.addEventListener("click", new_note);       
     </script>
 </body>
 </html>
